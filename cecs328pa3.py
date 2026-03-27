@@ -20,5 +20,20 @@ def max_profit(n, W, U, values, weights, volumes):
                                       [v - item_volume]
                                       + item_value)
 
+    # finds the indices of chosen items
+    chosen_indices = []
+    curr_w, curr_v = W, U
+    
+    # iterates backwards from the last item to the first item
+    for i in range(n, 0, -1):
+        # if profit value at the state is different from the state without the item, i-1 was included
+        if dp[i][curr_w][curr_v] != dp[i - 1][curr_w][curr_v]:
+            chosen_indices.append(i - 1) # 0-based indexing
+            curr_w -= weights[i - 1]
+            curr_v -= volumes[i - 1]
 
-    return (0, []) # placeholder
+    #sorts indices in increasing order
+    chosen_indices.sort()
+
+    # returns the final tuple (best_value, chsen_indices)
+    return(dp[n][W][U], chosen_indices)
